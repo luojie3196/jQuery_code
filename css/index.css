@@ -1,4 +1,4 @@
-input{
+input #sub{
 	background-color: green;
 }
 
@@ -7,3 +7,28 @@ input{
 	padding: 0px;
 }
 
+/*input[name=username]{
+	font-size: 20px;
+}*/
+
+h1,h6{
+	margin: 0px;
+	padding: 0px;
+	width: 200px;
+	border: 1px solid;
+	display: none;
+}
+
+#p_tag{
+	display: none;
+}
+
+#button.red {
+	color: blue;
+	display: block;
+	margin: 20px;
+}
+
+/*input {
+	display: block;
+}*/
