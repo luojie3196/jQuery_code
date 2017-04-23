@@ -355,8 +355,337 @@ isImmediatePropagationStopped() 判断是否调用了stopImmediatePropagation()�
 	$('a').click(function (e) {
 		return false;
 	});	
+
+
+	$('#but').click(function () {
+		alert('我的第一次点击来自模拟！');
+	}).trigger('click');
+
+	$('#but').click(function (e, data1, data2) {
+		alert(data1 + ',' + data2);
+	}).trigger('click', ['abc', '123']);
+
+
+	$('#but').click(function(event, dat1, dat2) {
+		alert(dat1.a + ',' + dat2[1]);
+	}).trigger('click', [{'a': '1', 'b': '2'}, ['123', 456]]);
+
+
+	$('#but').bind('myEvent', function(event) {
+		alert(event.type);
+	}).trigger('myEvent');
+
+.trigger()方法提供了简写方案，只要想让某个事件执行模拟用户行为，直接再调用一个
+空的同名事件即可。
+	$('#but').click(function () {
+		alert('我的第一次点击来自模拟！');
+	}).click(); //空的click()执行的是trigger()
+支持简写的事件：
+blur focusin mousedown resize
+change focusout mousenter scroll
+click keydown mouseleave select
+dblclick keypress mousemove submit
+error keyup mouseout unload
+focus load mouseover
+
+1..triggerHandler()方法并不会触发事件的默认行为，而.trigger()会。
+$('form').trigger('submit'); //模拟用户执行提交，并跳转到执行页面
+$('form').triggerHandler('submit'); //模拟用户执行提交，并阻止的默认行为
+如果我们希望使用.trigger()来模拟用户提交，并且阻止事件的默认行为，则需要这么写：
+$('form').submit(function (e) {
+e.preventDefault(); //阻止默认行为
+}).trigger('submit');
+
+2..triggerHandler()方法只会影响第一个匹配到的元素，而.trigger()会影响所有。
+
+3..triggerHandler()方法会返回当前事件执行的返回值，如果没有返回值，则返回
+undefined；而.trigger()则返回当前包含事件触发元素的jQuery 对象(方便链式连缀调用)。
+alert($('input').click(function () {
+return 123;
+}).triggerHandler('click')); //返回123，没有return 返回
+
+	alert($('#but').click(function () {
+		console.log('click but');
+		return 123;
+	}).trigger('click'));    //jQuery对象
+
+4..trigger()在创建事件的时候，会冒泡。但这种冒泡是自定义事件才能体现出来，是
+jQuery 扩展于DOM 的机制，并非DOM 特性。而.triggerHandler()不会冒泡。
+var index = 1;
+$('div').bind('myEvent',function(){
+alert('自定义事件' + index);
+index++;
+});
+$('.div3').trigger("myEvent");	
+
+二．命名空间
+有时，我们想对事件进行移除。但对于同名同元素绑定的事件移除往往比较麻烦，这个
+时候，可以使用事件的命名空间解决。
+$('input').bind('click.abc', function () {
+alert('abc');
+});
+$('input').bind('click.xyz', function () {
+alert('xyz');
+});
+$('input').unbind('click.abc'); //移除click 实践中命名空间为abc 的
+
+三．事件委托
+在jQuery 中，我们通过事件冒泡的特性，让子元素绑定的事件冒泡到父元素(或祖先元素)
+上，然后再进行相关处理即可。
+	$('.xbutton').on('click', function (e) {
+		console.log(e.currentTarget);
+		alert('替代.bind()');
+	});
+
+事件委托的好处
+万一子元素非常多，给每个子元素都添加一个事件，会影响到性能；
+为动态添加的元素也能绑上指定事件；
+
+on(events,[selector],[data],fn)
+demo1:
+点击相应的li弹出里面内容,这里把on换成bind是一样的没有区别.也就是说on不使用selector属性与bind并无区别 
+<ul>
+ <li>1</li>
+ <li>2</li>
+ <li>3</li>
+</ul>
+<script>
+ $(function () {
+  $('ul li').on('click',function(){
+   alert($(this).text())
+  }); 
+ })
+</script>
+
+demo2:
+<script>
+ // 这种情况你会发现点击第四个不具备事件.也就是不具备动态绑定事件能力
+ $(function () {
+  $('ul li').bind('click',function(){
+   alert($(this).text())
+  }); 
+  var ok = $('<li>4</li>');
+  $('ul').last().append(ok);
+ 
+ })
+</script>
+
+demo3:
+<script>
+ // 换成on的写法,添加selector属性,就是通过事件冒泡,进行了事件委托,把li的事件委托给其父元素,点击后面加入的li就默认绑定了事件
+ $(function () {
+  $('ul').on('click','li',function(){
+   alert($(this).text())
+  }); 
+  var ok = $('<li>4</li>');
+  $('ul').last().append(ok);
+ })
+</script>
+
+jQuery 还提供了三种预设速度参数字符串：slow、
+normal 和fast，分别对应600 毫秒、400 毫秒和200 毫秒。
+
+	$('.show').click(function(){
+		$("#xbox").show(1000);
+	});
+
+	$('.show').click(function () {
+		$('#xbox').show('slow', function () {
+			alert('动画持续完毕后，执行我！');
+		});
+	});	
+
+	$('.hide').click(function(){
+		$("#xbox").hide('normal');
+	});
+
+	$('.show').click(function () {
+		$('#ul_id').first().show(2000, function showSpan() {
+			$(this).next().show(2000, showSpan);
+		});
+	});	
+
+Ajax:
+1.JavaScript，通过用户或其他与浏览器相关事件捕获交互行为；
+2.XMLHttpRequest 对象，通过这个对象可以在不中断其它浏览器任务的情况下向服务
+器发送请求；
+3.服务器上的文件，以XML、HTML 或JSON 格式保存文本数据；
+4.其它JavaScript，解释来自服务器的数据（比如PHP 从MySQL 获取的数据）并将其
+呈现到页面上。
+
+	$('#input_ajax').click(function(event) {
+		$('#box_ajax').load('test.html');
+	});	
+
+	//get方式
+	$('#input_ajax').click(function(event) {
+		$('#box_ajax').load('test.php?url=baidu');
+	});
+
+
+	//post方式
+	$('#input_ajax').click(function () {
+		$('#box_ajax').load('test.php', {
+			url : 'baidu'
+		}, function(response, status, xhr){
+			alert('Return value: ' + response + 
+				', Status: ' + status + 
+				', XHR: ' + xhr.statusText);
+		});
+	});	
+
+XMLHttpRequest对象属于JavaScript 范畴，可以调用一些属性如下：
+属性名说明
+responseText 作为响应主体被返回的文本
+responseXML
+如果响应主体内容类型是"text/xml"或"application/xml"，
+则返回包含响应数据的XML DOM 文档
+status 响应的HTTP 状态
+statusText HTTP 状态的说明	
+
+1.GET 请求是通过URL 提交的，而POST 请求则是HTTP 消息实体提交的；
+2.GET 提交有大小限制（2KB），而POST 方式不受限制；
+3.GET 方式会被缓存下来，可能有安全性问题，而POST 没有这个问题；
+4.GET 方式通过$_GET[]获取，POST 方式通过$_POST[]获取。
+
+
+
+	//使用$.get()异步返回html 类型
+	$('#input_ajax').click(function () {
+		$.get('test.php', {
+			url : 'baidu'
+		}, function (response, status, xhr) {
+			if (status == 'success') {
+				console.log(response);
+				$('#box_ajax').html(response);
+			}
+		}) //type 自动转为html
+	});
+
+	//使用$.get()异步返回html 类型
+	$('#input_ajax').click(function () {
+		$.post('test.php', {
+			url : 'baidu'
+		}, function (response, status, xhr) {
+			if (status == 'success') {
+				console.log(response);
+				$('#box_ajax').html(response);
+			}
+		}) //type 自动转为html
+	});	
+
+	$('#input_ajax').click(function(event) {
+		$.ajax({
+			url: 'test.php',
+			type: 'POST',
+			dataType: 'html',
+			data: {url: 'baidu'},
+		})
+		.done(function(response, status, xhr) {
+			console.log("success");
+			$('#box_ajax').html(response);
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		.always(function() {
+			console.log("complete");
+		});
+		
+	});	
+
+
+	$('form input[type=button]').click(function(event) {
+		$.ajax({
+			url: 'test.php',
+			type: 'POST',
+			data: $('form').serialize(),
+		})
+		.done(function(response, status, xhr) {
+			console.log("success");
+			console.log($('form').serialize());
+			alert(response);
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		.always(function() {
+			console.log("complete");
+		});
+		
+	});
+
+
+	$(':radio').click(function () {
+		$('#box_ajax').html(decodeURIComponent($(this).serialize()));
+	});
+
+
+	$(':radio').click(function () {
+		console.log($(this).serializeArray());
+		var json = $(this).serializeArray();
+		$('#box_ajax').html(json[0].value);
+	});
+
+	//使用$.param()方法将对象转换为字符串键值对格式。
+	var obj = {a : 1, b : 2, c : 3};
+	var form = $.param(obj);
+	alert(form);
+
+	$('.loading').hide();
+
+	$(document).ajaxStart(function() {
+		$('.loading').show();
+	}).ajaxStop(function() {
+		$('.loading').hide();
+	});
+	
+	$(document).ajaxSuccess(function(event, xhr, settings) {
+		for (var i in settings){
+			$('#box_ajax').html($('#box_ajax').html() + i + '<br/>');
+		}
+	});
+
+	$('form input[type=button]').click(function(event) {
+		$.ajax({
+			url: 'test.php',
+			type: 'POST',
+			data: $('form').serialize(),
+		})
+		.done(function(response, status, xhr) {
+			console.log("success");
+			console.log($('form').serialize());
+			//$('#box_ajax').html(response);
+			console.log(response);
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		.always(function() {
+			console.log("complete");
+		});
+		
+	});
 */
 
+	$('#input_ajax').click(function(){
+		$.ajax({
+			url: 'test.json',
+			type: 'POST',
+			dataType: 'json',
+		})
+		.done(function(response, status, xhr) {
+			console.log("success");
+			alert(response[0].url);
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		.always(function() {
+			console.log("complete");
+		});
+		
+	});
 
 
 
