@@ -666,17 +666,17 @@ statusText HTTP 状态的说明
 		});
 		
 	});
-*/
 
 	$('#input_ajax').click(function(){
 		$.ajax({
 			url: 'test.json',
 			type: 'POST',
-			dataType: 'json',
+			//dataType: 'json',
 		})
 		.done(function(response, status, xhr) {
-			console.log("success");
-			alert(response[0].url);
+			//console.log("success");
+			console.log(response);
+			//alert(response[0].url);
 		})
 		.fail(function() {
 			console.log("error");
@@ -686,6 +686,95 @@ statusText HTTP 状态的说明
 		});
 		
 	});
+
+	var jqXHR = $.ajax({
+		type : 'POST',
+		url : 'test.php',
+		data : $('form').serialize()
+	});
+	for (var i in jqXHR) {
+	document.write(i + '<br />');
+	}
+
+
+	var str='      jquery    ';
+	alert(str);
+	alert($.trim(str));
+
+	//$.each()遍历数组
+	var arr = ['张三', '李四', '王五', '马六'];
+	$.each(arr, function (index, value) {
+		$('#box_ajax').html($('#box_ajax').html() + index + '.' + value + '<br />');
+	});
+
+	//$.each()遍历对象
+	$.each($.ajax(), function (name, fn) {
+		$('#box_ajax').html($('#box_ajax').html() + name + '.' + '<br /><br />');
+	})
+
+	//$.grep()数据筛选
+	var arr = [5,2,9,4,11,57,89,1,23,8];
+	var arrGrep = $.grep(arr, function (element, index) {
+		return element < 6 && index < 5;
+	});
+	alert(arrGrep);
+
+
+//$.map()修改数据
+	var arr = [5,2,9,4,11,57,89,1,23,8];
+	var arrMap = $.map(arr, function (element, index) {
+		if (element < 6 && index < 5) {
+			return element + 1;
+		}
+	});
+	alert(arrMap);
+
+
+	//$.inArray()获取查找到元素的下标
+	var arr = [5,2,9,4,11,57,89,1,23,8];
+	var arrInArray = $.inArray(1, arr);
+	alert(arrInArray);	
+
+
+	//$.merge()合并两个数组
+	var arr = [5,2,9,4,11,57,89,1,23,8];
+	var arr2 = [23,2,89,3,6,7];
+	alert($.merge(arr, arr2));
+
+
+	//$.unique()删除重复的DOM 元素
+	var divs = $('div').get();
+	divs = divs.concat($('.box').get());
+	alert($(divs).size());
+	$.unique(divs);
+	alert($(divs).size());
+
+	//.toArray()合并多个DOM 元素组成数组
+	alert($('li').toArray());
+
+测试工具函数
+$.isArray(obj) 判断是否为数组对象，是返回true
+$.isFunction(obj) 判断是否为函数，是返回true
+$.isEmptyObject(obj) 判断是否为空对象，是返回true
+$.isPlainObjet(obj) 判断是否为纯粹对象，是返回true
+$.contains(obj) 判断DOM 节点是否含另一个DOM 节点，是返回true
+$.type(data) 判断数据类型
+$.isNumeric(data) 判断数据是否为数值
+$.isWindow(data) 判断数据是否为window 对象
+
+URL 操作
+：$.param()，将对象的键值对转化为URL 键值对字符串形式。	
+	var obj = {
+		name : 'Lee',
+		age : 100
+	};
+	alert($.param(obj));
+
+$.proxy()可以解决诸如外部事件触发调用对象方法时this的指向问题。	
+*/
+
+	$('#val_form').validate();
+
 
 
 

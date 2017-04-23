@@ -3,6 +3,9 @@
 <head>
 	<title>jQuery</title>
 	<script type="text/javascript" src="js/jquery-3.2.1.js"></script>
+	<script type="text/javascript" src="js/jquery.validate.js"></script>
+	<script type="text/javascript" src="js/additional-methods.js"></script>
+	<script type="text/javascript" src="js/jquery.validate.messages_zh.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/index.css">
 </head>
@@ -100,6 +103,13 @@
 <input id="input_ajax" type="button" value="异步获取数据" />
 <div id="box_ajax"></div>
 <div class="loading">努力加载中...</div>
+
+<form id="val_form">
+	<p>用户名：<input type="text" class="required" name="username" minlength="2" />*</p>
+	<p>电子邮件：<input type="text" class="required email" name="email" /> *</p>
+	<p>网址：<input type="text" class="url" name="url" /></p>
+	<p><input type="submit" value="提交" /></p>
+</form>
 
 
 </body>
