@@ -36,3 +36,9 @@ h1,h6{
 .loading {
 	display: none;
 }
+
+
+/*Jquery UI CSS*/
+.ui-widget-header{
+	background: #fff;
+}

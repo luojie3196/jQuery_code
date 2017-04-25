@@ -775,6 +775,32 @@ $.proxy()可以解决诸如外部事件触发调用对象方法时this的指向�
 
 	$('#val_form').validate();
 
+	$('#dialog').dialog({
+		'title': 'Login',
+		'buttons': {
+			'Submit': function(){
+				alert('Submit');
+			},
+			'Cancel': function(){
+				$(this).dialog('close');
+			},
+		},
+		'width': 400,
+		'height': 300,
+		'show': false,
+		'hide': false,
+		'modal': true,
+		'resizable': false,
+		'draggable': false,
+		'closeText': 'Close dialog',
+		'autoOpen': false,
+
+	});
+
+	$('#reg_a').click(function(){
+		$('#dialog').dialog('open');
+	})
+
 
 
 
