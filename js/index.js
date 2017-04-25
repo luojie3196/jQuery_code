@@ -779,7 +779,8 @@ $.proxy()可以解决诸如外部事件触发调用对象方法时this的指向�
 		'title': 'Login',
 		'buttons': {
 			'Submit': function(){
-				alert('Submit');
+				//alert('Submit');
+				$(this).submit();
 			},
 			'Cancel': function(){
 				$(this).dialog('close');
@@ -793,13 +794,17 @@ $.proxy()可以解决诸如外部事件触发调用对象方法时this的指向�
 		'resizable': false,
 		'draggable': false,
 		'closeText': 'Close dialog',
-		'autoOpen': false,
+		//'autoOpen': false,
+		'closeOnEscape': false,
 
 	});
 
 	$('#reg_a').click(function(){
 		$('#dialog').dialog('open');
-	})
+	});
+
+	$('#reg_a').button();
+	$('#login_a').button();
 
 
 
