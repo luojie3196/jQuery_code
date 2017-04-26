@@ -7,7 +7,8 @@
 	<script type="text/javascript" src="js/additional-methods.js"></script>
 	<script type="text/javascript" src="js/jquery.validate.messages_zh.js"></script>
 	<script type="text/javascript" src="js/jquery-ui.js"></script>
-	<script type="text/javascript" src="js/jquery.form.js"></script>	
+	<script type="text/javascript" src="js/jquery.form.js"></script>
+	<script type="text/javascript" src="js/jquery.cookie.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
 	<link rel="stylesheet" type="text/css" href="css/index.css">
@@ -117,16 +118,27 @@
 <input id="reg_a" type="button" name="reg" value="Register">
 <input id="login_a" type="button" name="login" value="Login">
 
-<div id="dialog" title="login" >
-<p>
-<label>Username: </label>
-<input type="text" name="username"/>
-</p>
-<p>
-<label>Password: </label>
-<input type="password" name="password"/>
-</div>
-</p>
+<div id='dialog_box'></div>
+
+<form id="dialog" title="login" >
+	<p>
+	<label>Username: </label>
+	<input type="text" name="username" class="required" minlength="2" title="Please input username, lenght more than two." />
+	</p>
+	<p>
+	<label>Password: </label>
+	<input type="password" name="pass"/>
+	</p>
+	<p>
+	<label>Sex: </label>
+	<label><input name="sex" type="radio" value="male" checked="checked" />male </label>
+	<label><input name="sex" type="radio" value="female" />female </label>
+	</p>
+	<p>
+	<label>Date: </label>
+	<input id="date" type="text" name="date" readonly="readonly" />	
+	</p>
+</form>
 
 </body>
 </html>

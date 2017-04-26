@@ -42,3 +42,12 @@ h1,h6{
 .ui-widget-header{
 	background: #fff;
 }
+
+.hasDatepicker{
+/*	background: #fff;
+	border: 1px solid #666;*/
+	background: #ffffff none repeat scroll 0 0;
+	border-radius:4px;
+	border: 1px solid #c5c5c5;
+	color: #333333;
+}

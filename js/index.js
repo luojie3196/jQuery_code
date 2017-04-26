@@ -787,15 +787,22 @@ $.proxy()可以解决诸如外部事件触发调用对象方法时this的指向�
 			},
 		},
 		'width': 400,
-		'height': 300,
+		'height': 320,
 		'show': false,
 		'hide': false,
 		'modal': true,
 		'resizable': false,
-		'draggable': false,
+		'draggable': true,
 		'closeText': 'Close dialog',
 		//'autoOpen': false,
 		'closeOnEscape': false,
+		//submitHandler: function(form){
+			// $(form).ajaxSubmit({
+			// 	url: 'test.php',
+			// 	type: 'POST',
+			// });
+		//	alert('Submit success!');
+		//},
 
 	});
 
@@ -806,8 +813,39 @@ $.proxy()可以解决诸如外部事件触发调用对象方法时this的指向�
 	$('#reg_a').button();
 	$('#login_a').button();
 
+	$('#dialog').submit(function () {
+		$(this).ajaxSubmit({
+			url: 'test.php',
+			type: 'POST',
+			//target: '#dialog_box',
+			dataType : null,  //xml,json,script,默认为 null
+			//clearForm : true, //成功提交后,清空表单
+			//resetForm : true,
 
+			beforeSubmit : function (formData, jqForm, options) {
+				//alert(formData[0].name);//得到传递表单元素的 name
+				//alert(formData[0].value);//得到传递表单元素的 value
+				//alert(jqForm);//得到 form 的 jquery 对象
+				//alert(options);//得到目前 options 设置的属性
+				//alert('正在提交中!!!');
+				$.each(formData, function(index, value){
+					console.log(index + ': ' + value.name + '=' + value.value);
+				})
+				return true;
+			},
 
+			success : function (responseText, statusText, xhr) {
+				console.log(responseText + statusText + xhr);  //成功后回调
+			},
+		});
+
+		return false;
+	});
+
+	//$('#dialog').buttonset();
+	$('#date').datepicker();
+	$('#dialog').validate();
+	$('#dialog input[title]').tooltip();
 
 
 
