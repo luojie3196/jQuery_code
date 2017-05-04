@@ -4,7 +4,7 @@
 	// } else {
 	// 	echo '其他网站';
 	// }
-
+	//phpinfo();
 	echo $_POST['username'] . " " . $_POST['pass'];
 
 ?>

@@ -845,9 +845,16 @@ $.proxy()可以解决诸如外部事件触发调用对象方法时this的指向�
 	//$('#dialog').buttonset();
 	$('#date').datepicker();
 	$('#dialog').validate();
-	$('#dialog input[title]').tooltip();
 
+	// $('#dialog input[title]').bind('f', function(event) {
+	// 	$(this).tooltip();
+	// });
 
+	//$('#dialog input[title]').tooltip();
+
+	$('#dialog input[title]').focus(function(event) {
+		$(this).tooltip();
+	});
 
 
 
